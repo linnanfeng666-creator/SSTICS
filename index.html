@@ -604,6 +604,37 @@ nickname: "裁决者",
                  alert('测试结果已复制到剪贴板！');
              });
          });
+         // ========== 新增：后台数据统计模块 开始 ==========
+ // 初始化统计数据
+ let sstiStat = JSON.parse(localStorage.getItem('sstiBackStat')) || {
+     visitTotal: 0,
+     finishTotal: 0,
+     typeCount: {}
+ };
+ // 页面打开自动+1访问
+ sstiStat.visitTotal += 1;
+ // 保存数据到本地
+ function saveSstiStat() {
+     localStorage.setItem('sstiBackStat', JSON.stringify(sstiStat));
+ }
+ saveSstiStat();
+ // 提交结果时调用：记录人格类型
+ function recordPersonType(typeName) {
+     sstiStat.finishTotal += 1;
+     if (!sstiStat.typeCount[typeName]) {
+         sstiStat.typeCount[typeName] = 0;
+     }
+     sstiStat.typeCount[typeName] += 1;
+     saveSstiStat();
+ }
+ // 查看后台统计数据（控制台打印，你F12控制台就能看全部数据）
+ function showBackStat() {
+     console.log("===== SSTI测试后台统计数据 =====");
+     console.log("总访问人数：", sstiStat.visitTotal);
+     console.log("完成答题人数：", sstiStat.finishTotal);
+     console.log("各人格类型分布：", sstiStat.typeCount);
+ }
+ // ========== 新增：后台数据统计模块 结束 ==========
      </script>
  </body>
  </html>
